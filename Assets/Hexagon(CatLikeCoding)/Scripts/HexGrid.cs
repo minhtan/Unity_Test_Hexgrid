@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
-
+namespace catlikecode{
 public class HexGrid : MonoBehaviour {
 
 	public int width = 6;
@@ -40,11 +40,36 @@ public class HexGrid : MonoBehaviour {
 		HexCell cell = cells[i] = Instantiate<HexCell>(cellPrefab);
 		cell.transform.SetParent(transform, false);
 		cell.transform.localPosition = position;
+		cell.gameObject.name = "cell " + i;
+		cell.coordinates = HexCoordinates.FromOffsetCoordinates(x, z);
 
 		Text label = Instantiate<Text>(cellLabelPrefab);
 		label.rectTransform.SetParent(gridCanvas.transform, false);
 		label.rectTransform.anchoredPosition = new Vector2(position.x, position.z);
-		label.text = x.ToString() + "." + z.ToString();
+		label.text = cell.coordinates.ToStringOnSeparateLines();
+		label.gameObject.name = "cellUI " + i;
 	}
 
+	void Update () {
+		if (Input.GetMouseButton(0)) {
+			HandleInput();
+		}
+	}
+
+	void HandleInput () {
+		Ray inputRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+		RaycastHit hit;
+		if (Physics.Raycast(inputRay, out hit)) {
+			TouchCell(hit.point);
+			Debug.DrawLine(Input.mousePosition, hit.point, Color.green);
+		}
+	}
+
+	void TouchCell (Vector3 position) {
+		position = transform.InverseTransformPoint(position);
+		HexCoordinates coordinates = HexCoordinates.FromPosition(position);
+		Debug.Log("touched at " + coordinates.ToString());
+	}
+
+}
 }

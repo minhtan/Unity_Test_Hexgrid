@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+namespace catlikecode{
 public class HexMetrics {
 
 	public const float outerRadius = 10f;
@@ -18,5 +18,5 @@ public class HexMetrics {
 	};
 
 }
-
+}
 //http://catlikecoding.com/unity/tutorials/hex-map-1/

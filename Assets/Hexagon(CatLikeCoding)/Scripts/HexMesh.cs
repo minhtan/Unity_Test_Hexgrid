@@ -1,15 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-
+namespace catlikecode{
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class HexMesh : MonoBehaviour {
 
 	Mesh hexMesh;
 	List<Vector3> vertices;
 	List<int> triangles;
+	MeshCollider meshCollider;
 
 	void Awake () {
 		GetComponent<MeshFilter>().mesh = hexMesh = new Mesh();
+		meshCollider = gameObject.AddComponent<MeshCollider>();
+
 		hexMesh.name = "Hex Mesh";
 		vertices = new List<Vector3>();
 		triangles = new List<int>();
@@ -36,6 +39,7 @@ public class HexMesh : MonoBehaviour {
 				center + HexMetrics.corners[i + 1]
 			);
 		}
+		meshCollider.sharedMesh = hexMesh;
 	}
 
 	void AddTriangle (Vector3 v1, Vector3 v2, Vector3 v3) {
@@ -47,4 +51,5 @@ public class HexMesh : MonoBehaviour {
 		triangles.Add(vertexIndex + 1);
 		triangles.Add(vertexIndex + 2);
 	}
+}
 }
