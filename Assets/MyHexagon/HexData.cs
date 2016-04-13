@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace TanHex{
 	public static class HexData {
@@ -51,14 +52,14 @@ namespace TanHex{
 		}
 		#endregion
 
-		#region conversion
-		public static Vector2 CubeToAxialCord(Vector3 cubeCord){
+		#region coordinate conversion
+		public static Vector2 CoordCubeToAxial(Vector3 cubeCord){
 			float q = cubeCord.x;
 			float r = cubeCord.z;
 			return new Vector2 (q, r);
 		}
 
-		public static Vector3 AxialToCubeCord(Vector2 axialCord){
+		public static Vector3 CoordAxialToCube(Vector2 axialCord){
 			float x = axialCord.x;
 			float z = axialCord.y;
 			float y = -x - z;
@@ -66,8 +67,46 @@ namespace TanHex{
 		}
 		#endregion
 
-		#region navigation
+		#region neighbor hexes
+		public enum Direction{
+			TopRight,
+			Right,
+			BotRight,
+			BotLeft,
+			Left,
+			TopLeft
+		};
 
+		static Dictionary<Direction, Vector2> axialDirection = new Dictionary<Direction, Vector2> () {
+			{Direction.TopRight, new Vector2(1, -1)},
+			{Direction.Right, new Vector2(1, 0)},
+			{Direction.BotRight, new Vector2(0, 1)},
+			{Direction.BotLeft, new Vector2(-1, 1)},
+			{Direction.Left, new Vector2(-1, 0)},
+			{Direction.TopLeft, new Vector2(0, -1)}
+		};
+		public static Dictionary<Direction, Vector2> AxialDirection {
+			get {return axialDirection;}
+		}
+
+		public static Vector2 HexNeighbor(Vector2 hex, Direction dir) {
+			Vector2 value;
+			if (AxialDirection.TryGetValue (dir, out value)) {
+				return hex + value;
+			} else {
+				return hex;
+			}
+		}
+		#endregion
+
+		#region distance
+		public static float AxialDistance(Vector2 a, Vector2 b){
+			return Mathf.Max (
+				Mathf.Abs(a.x - b.x),
+				Mathf.Abs(a.y - b.y),
+				Mathf.Abs(a.x + a.y - b.x - b.y)
+			);
+		}
 		#endregion
 	}
 }
