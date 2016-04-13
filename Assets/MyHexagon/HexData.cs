@@ -101,11 +101,7 @@ namespace TanHex{
 
 		#region distance
 		public static float AxialDistance(Vector2 a, Vector2 b){
-			return Mathf.Max (
-				Mathf.Abs(a.x - b.x),
-				Mathf.Abs(a.y - b.y),
-				Mathf.Abs(a.x + a.y - b.x - b.y)
-			);
+			return ( Mathf.Abs(a.x - b.x) + Mathf.Abs(a.y - b.y) + Mathf.Abs(a.x + a.y - b.x - b.y) ) / 2;
 		}
 		#endregion
 	}
