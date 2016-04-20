@@ -2,8 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace TanHex{
+namespace RedBlob{
 	public static class HexData {
+		public enum CellStatus{
+			NULL,
+			FREE,
+			BLOCKED
+		}
+
 		#region metric
 		static float outerR = 1;
 		public static float OuterR {
@@ -89,7 +95,7 @@ namespace TanHex{
 			get {return axialDirection;}
 		}
 
-		public static Vector2 HexNeighbor(Vector2 hex, Direction dir) {
+		public static Vector2 GetHexNeighborPosition(Vector2 hex, Direction dir) {
 			Vector2 value;
 			if (AxialDirection.TryGetValue (dir, out value)) {
 				return hex + value;

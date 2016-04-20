@@ -2,11 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace TanHex{
+namespace RedBlob{
 	[RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 	public class HexCell : MonoBehaviour {
 		public Texture texture;
 		Mesh hexMesh;
+
+		public HexData.CellStatus status;
 
 		void Start(){
 			GetComponent<MeshFilter>().mesh = hexMesh = new Mesh();
@@ -19,6 +21,5 @@ namespace TanHex{
 			hexMesh.RecalculateNormals ();
 			GetComponent<MeshRenderer> ().material.mainTexture = texture;
 		}
-			
 	}
 }
