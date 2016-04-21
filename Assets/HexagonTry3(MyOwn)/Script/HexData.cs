@@ -1,27 +1,21 @@
 ﻿using UnityEngine;
 using System.Collections;
 namespace Tan{
-	public struct HexCoordinates {
+	public class Coordinate{
 		public int Row { get; private set; }
 		public int Col { get; private set; }
-		public HexCoordinates (int row, int col) {
+		public Coordinate (int row, int col) {
 			Row = row;
 			Col = col;
 		}
 	}
 
-	public enum CellStatus{
-		FREE,
-		BLOCKED
+	public class HexCoordinate : Coordinate {
+		public HexCoordinate (int row, int col) : base (row, col){}
 	}
 
-	public struct MapCoor{
-		public int row;
-		public int col;
-		public MapCoor(int row, int col){
-			this.row = row;
-			this.col = col;
-		}
+	public class MapCoordinate : Coordinate{
+		public MapCoordinate (int row, int col) : base (row, col){}
 	}
 
 	public class HexData {
