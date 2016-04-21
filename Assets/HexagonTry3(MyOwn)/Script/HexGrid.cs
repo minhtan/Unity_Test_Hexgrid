@@ -1,24 +1,48 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Tan{
-	public struct MapCoor{
-		public int row;
-		public int col;
-		public MapCoor(int row, int col){
-			this.row = row;
-			this.col = col;
-		}
-	}
-
 	public class HexGrid : MonoBehaviour {
-		int[][] grid;
+		Dictionary<HexCoordinates, HexCell> cells = new Dictionary<HexCoordinates, HexCell>();
 		public int rowNo = 5;
 		public int colNo = 5;
+		GameObject tempGo;
+		public GameObject cellPrefab;
 
 		void Start(){
-			MapCoor mc = RectHexMap.HexCoorToMap (new HexCoordinates (2, 0));
-			Debug.Log (mc.row + " " + mc.col);
+			CreateCells ();
 		}
+
+		HexCell GetCell(HexCoordinates coor){
+			HexCell cell;
+			if (cells.TryGetValue (coor, out cell)) {
+				return cell;
+			} else {
+				return null;
+			}
+		}
+
+		HexCell CreateCell(int x, int z, int y = 0, CellStatus status = CellStatus.FREE){
+			tempGo = Instantiate (cellPrefab);
+			tempGo.transform.SetParent (transform, false);
+
+			Vector3 pos;
+			pos.x = x * HexData.InnerR;
+			pos.y = y;
+			pos.z = z * 1.5f * HexData.OuterR;
+			tempGo.transform.localPosition = pos;
+
+			return tempGo.GetComponent<HexCell> ();
+		}
+
+		void CreateCells(){
+			for(int r=0; r < rowNo; r++){
+				for(int c=0; c <colNo; c++){
+					cells.Add (RectHexMap.MapToHexCoor(r, c), CreateCell(c, r));
+				}
+			}
+		}
+
 	}
 }
